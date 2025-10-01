@@ -10,7 +10,7 @@ void main()
 	
 	try
 	{
-		cout << Factorial(-2) << endl;
+		cout << Factorial(5) << endl;
 	}
 	catch (const std::exception& e)
 	{
@@ -24,7 +24,7 @@ unsigned long long Factorial(int n)
 	if (n == 0 || n == 1) return 1;
 	if (n > 20)throw std::overflow_error("Ошибка: переполнение");
 
-	unsigned long long previous = Factorial(n - 1);
-	return n * previous;
+	;
+	return n * Factorial(n - 1);
 
 }
