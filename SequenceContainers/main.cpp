@@ -1,17 +1,23 @@
 #include <iostream>
 #include <array>
 #include <vector>
+#include <list>
+#include <forward_list>
 using std::cin;
 using std::cout;
 using std::endl;
 
 #define tab "\t"
 #define delimiter "\n-------------------------------------------------------------------------------------------------------\n"
+#define ВЫВОД_ВЕКТОРА for (int i : vec)cout << i << tab; cout << endl;
+#define ВЫВОД_ЛИСТА for (int i : list)cout << i << tab; cout << endl;
+#define ВЫВОД_Ф_ЛИСТА for (int i : flist)cout << i << tab; cout << endl;
 
 template<typename T>void vector_info(const std::vector<T>& vec);
 
 //#define STL_ARRAY
-#define STL_VECTOR
+//#define STL_VECTOR
+#define STL_HOMEWORK
 
 void main()
 {
@@ -85,8 +91,60 @@ void main()
 	vec.insert(vec.begin()+index, value);
 	for (int i : vec)cout << i << tab; cout << endl;
 
-
 #endif // STL_VECTOR
+
+#ifdef STL_HOMEWORK
+	//				VECTOR
+	std::vector<int> vec = { 0,1,1,2,3,5,8,13,21,34 };
+	ВЫВОД_ВЕКТОРА
+	int index;
+	cout << "Введите индекс удаляемого числа: "; cin >> index;
+	vec.erase(vec.cbegin() + index);
+	ВЫВОД_ВЕКТОРА
+	//
+
+	//				LIST
+	std::list<int> list = { 0,1,1,2,3,5,8,13,21,34 };
+	int value;
+	cout << "Введите индекс добавляемого числа: "; cin >> index;
+	cout << "Введите значение добавляемого числа: "; cin >> value;
+	ВЫВОД_ЛИСТА
+
+	std::list<int>::iterator it = list.begin();
+	for (int i = 0; i < index; i++)
+		++it;
+	list.insert(it, value);
+
+	ВЫВОД_ЛИСТА
+	cout << "Введите индекс удаляемого числа: "; cin >> index;
+	it = list.begin();
+	for (int i = 0; i < index; i++)
+		++it;
+	list.erase(it);
+	ВЫВОД_ЛИСТА
+
+	//					FORWARD_LIST
+	std::forward_list<int> flist = { 0,1,1,2,3,5,8,13,21,34 };
+	ВЫВОД_Ф_ЛИСТА
+	cout << "Введите индекс добавляемого числа: "; cin >> index;
+	cout << "Введите значение добавляемого числа: "; cin >> value;
+	ВЫВОД_Ф_ЛИСТА
+
+	std::forward_list<int>::iterator flist_it = flist.before_begin();
+	for (int i = 0; i < index; i++) ++flist_it;
+	flist.insert_after(flist_it, value);
+	ВЫВОД_Ф_ЛИСТА
+
+	flist_it = flist.before_begin();
+	cout << "Введите индекс удаляемого числа: "; cin >> index;
+	for (int i = 0; i < index; i++)++flist_it;
+	flist.erase_after(flist_it);
+	ВЫВОД_Ф_ЛИСТА
+
+
+
+#endif // STL_HOMEWORK
+
 
 }
 
