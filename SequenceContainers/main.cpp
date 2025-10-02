@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <array>
 #include <vector>
 #include <list>
@@ -9,9 +9,9 @@ using std::endl;
 
 #define tab "\t"
 #define delimiter "\n-------------------------------------------------------------------------------------------------------\n"
-#define ÂÛÂÎÄ_ÂÅÊÒÎĞÀ for (int i : vec)cout << i << tab; cout << endl;
-#define ÂÛÂÎÄ_ËÈÑÒÀ for (int i : list)cout << i << tab; cout << endl;
-#define ÂÛÂÎÄ_Ô_ËÈÑÒÀ for (int i : flist)cout << i << tab; cout << endl;
+#define Ğ’Ğ«Ğ’ĞĞ”_Ğ’Ğ•ĞšĞ¢ĞĞ Ğ for (int i : vec)cout << i << tab; cout << endl;
+#define Ğ’Ğ«Ğ’ĞĞ”_Ğ›Ğ˜Ğ¡Ğ¢Ğ for (int i : list)cout << i << tab; cout << endl;
+#define Ğ’Ğ«Ğ’ĞĞ”_Ğ¤_Ğ›Ğ˜Ğ¡Ğ¢Ğ for (int i : flist)cout << i << tab; cout << endl;
 
 template<typename T>void vector_info(const std::vector<T>& vec);
 
@@ -86,8 +86,8 @@ void main()
 
 	int index;
 	int value;
-	cout << "Ââåäèòå èíäåêñ äîáàâëÿåìîãî ıëåìåíòà: "; cin >> index;
-	cout << "Ââåäèòå çíà÷åíèå äîáàâëÿåìîãî ıëåìåíòà: "; cin >> value;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ°: "; cin >> index;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ ÑĞ»ĞµĞ¼ĞµĞ½Ñ‚Ğ°: "; cin >> value;
 	vec.insert(vec.begin()+index, value);
 	for (int i : vec)cout << i << tab; cout << endl;
 
@@ -96,50 +96,50 @@ void main()
 #ifdef STL_HOMEWORK
 	//				VECTOR
 	std::vector<int> vec = { 0,1,1,2,3,5,8,13,21,34 };
-	ÂÛÂÎÄ_ÂÅÊÒÎĞÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ’Ğ•ĞšĞ¢ĞĞ Ğ
 	int index;
-	cout << "Ââåäèòå èíäåêñ óäàëÿåìîãî ÷èñëà: "; cin >> index;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ ÑƒĞ´Ğ°Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> index;
 	vec.erase(vec.cbegin() + index);
-	ÂÛÂÎÄ_ÂÅÊÒÎĞÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ’Ğ•ĞšĞ¢ĞĞ Ğ
 	//
 
 	//				LIST
 	std::list<int> list = { 0,1,1,2,3,5,8,13,21,34 };
 	int value;
-	cout << "Ââåäèòå èíäåêñ äîáàâëÿåìîãî ÷èñëà: "; cin >> index;
-	cout << "Ââåäèòå çíà÷åíèå äîáàâëÿåìîãî ÷èñëà: "; cin >> value;
-	ÂÛÂÎÄ_ËÈÑÒÀ
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> index;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> value;
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ›Ğ˜Ğ¡Ğ¢Ğ
 
 	std::list<int>::iterator it = list.begin();
 	for (int i = 0; i < index; i++)
 		++it;
 	list.insert(it, value);
 
-	ÂÛÂÎÄ_ËÈÑÒÀ
-	cout << "Ââåäèòå èíäåêñ óäàëÿåìîãî ÷èñëà: "; cin >> index;
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ›Ğ˜Ğ¡Ğ¢Ğ
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ ÑƒĞ´Ğ°Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> index;
 	it = list.begin();
 	for (int i = 0; i < index; i++)
 		++it;
 	list.erase(it);
-	ÂÛÂÎÄ_ËÈÑÒÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ›Ğ˜Ğ¡Ğ¢Ğ
 
 	//					FORWARD_LIST
 	std::forward_list<int> flist = { 0,1,1,2,3,5,8,13,21,34 };
-	ÂÛÂÎÄ_Ô_ËÈÑÒÀ
-	cout << "Ââåäèòå èíäåêñ äîáàâëÿåìîãî ÷èñëà: "; cin >> index;
-	cout << "Ââåäèòå çíà÷åíèå äîáàâëÿåìîãî ÷èñëà: "; cin >> value;
-	ÂÛÂÎÄ_Ô_ËÈÑÒÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ¤_Ğ›Ğ˜Ğ¡Ğ¢Ğ
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> index;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ·Ğ½Ğ°Ñ‡ĞµĞ½Ğ¸Ğµ Ğ´Ğ¾Ğ±Ğ°Ğ²Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> value;
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ¤_Ğ›Ğ˜Ğ¡Ğ¢Ğ
 
 	std::forward_list<int>::iterator flist_it = flist.before_begin();
 	for (int i = 0; i < index; i++) ++flist_it;
 	flist.insert_after(flist_it, value);
-	ÂÛÂÎÄ_Ô_ËÈÑÒÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ¤_Ğ›Ğ˜Ğ¡Ğ¢Ğ
 
 	flist_it = flist.before_begin();
-	cout << "Ââåäèòå èíäåêñ óäàëÿåìîãî ÷èñëà: "; cin >> index;
+	cout << "Ğ’Ğ²ĞµĞ´Ğ¸Ñ‚Ğµ Ğ¸Ğ½Ğ´ĞµĞºÑ ÑƒĞ´Ğ°Ğ»ÑĞµĞ¼Ğ¾Ğ³Ğ¾ Ñ‡Ğ¸ÑĞ»Ğ°: "; cin >> index;
 	for (int i = 0; i < index; i++)++flist_it;
 	flist.erase_after(flist_it);
-	ÂÛÂÎÄ_Ô_ËÈÑÒÀ
+	Ğ’Ğ«Ğ’ĞĞ”_Ğ¤_Ğ›Ğ˜Ğ¡Ğ¢Ğ
 
 
 
