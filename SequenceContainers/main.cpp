@@ -3,6 +3,7 @@
 #include <vector>
 #include <list>
 #include <forward_list>
+#include <deque>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -14,10 +15,13 @@ using std::endl;
 #define ВЫВОД_Ф_ЛИСТА for (int i : flist)cout << i << tab; cout << endl;
 
 template<typename T>void vector_info(const std::vector<T>& vec);
+template<typename T>void deque_info(const std::deque<T>& vec);
 
 //#define STL_ARRAY
-//#define STL_VECTOR
-#define STL_HOMEWORK
+#define STL_VECTOR
+#define STL_DEQUE
+//#define STL_HOMEWORK
+//#define 
 
 void main()
 {
@@ -81,8 +85,10 @@ void main()
 	/*vec.resize(18);*/
 	for (int i : vec)cout << i << tab;cout << endl;
 	vector_info(vec);
-	cout << vec.front();
+	cout << vec.front() << endl;
 	cout << vec.back();
+	cout << endl;
+	cout << endl;
 
 	int index;
 	int value;
@@ -145,6 +151,16 @@ void main()
 
 #endif // STL_HOMEWORK
 
+#ifdef STL_DEQUE
+	std::deque<int> deque = {3,5,8,13,21};
+	deque.push_front(34);
+	deque.push_back(2);
+
+	deque_info(deque);
+	deque.assign(vec.begin() + 3, vec.end() - 3);
+	for (int i : deque)cout << i << tab; cout << endl;
+#endif // STL_DEQUE
+
 
 }
 
@@ -153,5 +169,11 @@ template<typename T>void vector_info(const std::vector<T>& vec)
 	cout << "Size:\t" << vec.size() << endl;
 	cout << "MaxSize:\t" << vec.max_size() << endl;
 	cout << "Capacity:\t" << vec.capacity() << endl;
+	cout << delimiter << endl;
+}
+template<typename T>void deque_info(const std::deque<T>& vec)
+{
+	cout << "Size:\t" << vec.size() << endl;
+	cout << "MaxSize:\t" << vec.max_size() << endl;
 	cout << delimiter << endl;
 }
