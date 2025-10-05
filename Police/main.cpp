@@ -1,4 +1,4 @@
-#include <iostream>
+п»ї#include <iostream>
 #include <list>
 #include <map>
 #include <string>
@@ -17,7 +17,7 @@ public:
 
 	void print()const
 	{
-		cout << "Дата: " << Date << " Нарушение: " << Type << " Стоимость: " << Cost << " руб." << endl;
+		cout << "Р”Р°С‚Р°: " << Date << " РќР°СЂСѓС€РµРЅРёРµ: " << Type << " РЎС‚РѕРёРјРѕСЃС‚СЊ: " << Cost << " СЂСѓР±." << endl;
 	}
 	std::string toString() const
 	{
@@ -35,17 +35,17 @@ public:
 	}
 	void printDataBase() const
 	{
-		cout << "\t\tБаза данных" << endl;
+		cout << "\t\tР‘Р°Р·Р° РґР°РЅРЅС‹С…" << endl;
 		if (database.empty())
 		{
-			cout << "База данных пуста" << endl;
+			cout << "Р‘Р°Р·Р° РґР°РЅРЅС‹С… РїСѓСЃС‚Р°" << endl;
 			return;
 		}
 		for (std::map<std::string, std::list<Violations>>::const_iterator it = database.begin(); it != database.end(); ++it)
 		{
-			cout << "Номер машины: " << it->first << endl;
-			cout << "Нарушение/я (" << it->second.size() << "):" << endl;
-			cout << (it->second.size() == 1 ? "Нарушение (" : "Нарушений (") << it->second.size() << "):" << endl;
+			cout << "РќРѕРјРµСЂ РјР°С€РёРЅС‹: " << it->first << endl;
+			cout << "РќР°СЂСѓС€РµРЅРёРµ/СЏ (" << it->second.size() << "):" << endl;
+			cout << (it->second.size() == 1 ? "РќР°СЂСѓС€РµРЅРёРµ (" : "РќР°СЂСѓС€РµРЅРёР№ (") << it->second.size() << "):" << endl;
 			for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
 			{
 				V->print();
@@ -55,16 +55,16 @@ public:
 	}
 	void printByCarNumber(const std::string& Number)const
 	{
-		cout << "Данные по номеру" << endl;
+		cout << "Р”Р°РЅРЅС‹Рµ РїРѕ РЅРѕРјРµСЂСѓ" << endl;
 		std::map<std::string, std::list<Violations>>::const_iterator it = database.find(Number);
 
 		if (it == database.end())
 		{
-			cout << "Машина с этим номером не найдена" << endl;
+			cout << "РњР°С€РёРЅР° СЃ СЌС‚РёРј РЅРѕРјРµСЂРѕРј РЅРµ РЅР°Р№РґРµРЅР°" << endl;
 			return;
 		}
 
-		cout << "Номер машины: " << it->first << endl;
+		cout << "РќРѕРјРµСЂ РјР°С€РёРЅС‹: " << it->first << endl;
 		cout << "" << it->second.size() << endl;
 		for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
 		{
@@ -73,13 +73,13 @@ public:
 	}
 	void printByCarNumberRange(const std::string& Number_first, const std::string& Number_second) const
 	{
-		cout << "Данные по диапазону номеров" << endl;
+		cout << "Р”Р°РЅРЅС‹Рµ РїРѕ РґРёР°РїР°Р·РѕРЅСѓ РЅРѕРјРµСЂРѕРІ" << endl;
 		for (std::map<std::string, std::list<Violations>>::const_iterator it = database.begin(); it != database.end(); ++it)
 		{
 			if (it->first >= Number_first && it->first <= Number_second)
 			{
-				cout << endl << "Номер машины: " << it->first << endl;
-				cout << "Количество нарушений: " << it->second.size() << endl;
+				cout << endl << "РќРѕРјРµСЂ РјР°С€РёРЅС‹: " << it->first << endl;
+				cout << "РљРѕР»РёС‡РµСЃС‚РІРѕ РЅР°СЂСѓС€РµРЅРёР№: " << it->second.size() << endl;
 				for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
 				{
 					V->print();
@@ -96,7 +96,7 @@ public:
 
 		if (!fout.is_open())
 		{
-			cout << "Ошибка открытия файла!" << endl;
+			cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°!" << endl;
 			return;
 		}
 
@@ -108,7 +108,7 @@ public:
 			}
 		}
 		fout.close();
-		cout << "Данные успешно загружены: " << filename << endl;
+		cout << "Р”Р°РЅРЅС‹Рµ СѓСЃРїРµС€РЅРѕ Р·Р°РіСЂСѓР¶РµРЅС‹: " << filename << endl;
 	}
 	void LoadFromFile(const std::string& filename)const
 	{
@@ -116,7 +116,7 @@ public:
 
 		if (!fin.is_open())
 		{
-			cout << "Ошибка открытия файла" << endl;
+			cout << "РћС€РёР±РєР° РѕС‚РєСЂС‹С‚РёСЏ С„Р°Р№Р»Р°" << endl;
 			return;
 		}
 
@@ -133,21 +133,21 @@ void main()
 	setlocale(LC_ALL, "Russian");
 	PoliceDataBase police;
 
-	police.addViolations("А423НР", Violations("2024-01-15", "Превышение скорости", 500.0));
-	police.addViolations("А423НР", Violations("2024-01-20", "Неправильная парковка", 300.0));
-	police.addViolations("Т742МА", Violations("2024-01-18", "Проезд на красный свет", 5000.0));
-	police.addViolations("М907ММ", Violations("2024-01-22", "Отсутствие страховки", 800.0));
-	police.addViolations("В123АВ", Violations("2024-01-25", "Непристегнутый ремень", 1000.0));
-	police.addViolations("С456СЕ", Violations("2024-01-30", "Превышение скорости", 500.0));
+	police.addViolations("Рђ423РќР ", Violations("2024-01-15", "РџСЂРµРІС‹С€РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚Рё", 500.0));
+	police.addViolations("Рђ423РќР ", Violations("2024-01-20", "РќРµРїСЂР°РІРёР»СЊРЅР°СЏ РїР°СЂРєРѕРІРєР°", 300.0));
+	police.addViolations("Рў742РњРђ", Violations("2024-01-18", "РџСЂРѕРµР·Рґ РЅР° РєСЂР°СЃРЅС‹Р№ СЃРІРµС‚", 5000.0));
+	police.addViolations("Рњ907РњРњ", Violations("2024-01-22", "РћС‚СЃСѓС‚СЃС‚РІРёРµ СЃС‚СЂР°С…РѕРІРєРё", 800.0));
+	police.addViolations("Р’123РђР’", Violations("2024-01-25", "РќРµРїСЂРёСЃС‚РµРіРЅСѓС‚С‹Р№ СЂРµРјРµРЅСЊ", 1000.0));
+	police.addViolations("РЎ456РЎР•", Violations("2024-01-30", "РџСЂРµРІС‹С€РµРЅРёРµ СЃРєРѕСЂРѕСЃС‚Рё", 500.0));
 
-	cout << "\tТЕСТИРОВАНИЕ БАЗЫ ДАННЫХ ГАИ" << endl;
+	cout << "\tРўР•РЎРўРР РћР’РђРќРР• Р‘РђР—Р« Р”РђРќРќР«РҐ Р“РђР" << endl;
 
 	police.printDataBase();
 
-	police.printByCarNumber("А423НР");
-	police.printByCarNumber("Х999ХХ");
+	police.printByCarNumber("Рђ423РќР ");
+	police.printByCarNumber("РҐ999РҐРҐ");
 
-	police.printByCarNumberRange("А100АА", "В200ВВ");
-	police.printByCarNumberRange("Х100ХХ", "Х999ХХ");
+	police.printByCarNumberRange("Рђ100РђРђ", "Р’200Р’Р’");
+	police.printByCarNumberRange("РҐ100РҐРҐ", "РҐ999РҐРҐ");
 
 }
