@@ -1,153 +1,102 @@
-﻿#include <iostream>
-#include <list>
-#include <map>
-#include <string>
-#include <fstream>
-using std::cout;
+﻿#include<iostream>
+#include<fstream>
+#include<map>
+#include<list>
 using std::cin;
+using std::cout;
 using std::endl;
 
-class Violations
-{
-	std::string Date;
-	std::string Type;
-	double Cost;
-public:
-	Violations(const std::string& date = "", const std::string& type = "", double cost = 0.0) : Date(date), Type(type), Cost(cost) {}
+#define delimiter "\n--------------------------------------------------------------\n"
 
-	void print()const
-	{
-		cout << "Дата: " << Date << " Нарушение: " << Type << " Стоимость: " << Cost << " руб." << endl;
-	}
-	std::string toString() const
-	{
-		return Date + "|" + Type + "|" + std::to_string(Cost);
-	}
+const std::map<int, std::string> VIOLATIONS =
+{
+	{0, "N/A"},
+	{1, "Парковка в неположенном месте"},
+	{2, "Непристёгнутый ремень безопасности"},
+	{3, "Пересечение сплошной"},
+	{4, "Превышение скорости"},
+	{5, "Проезд на красный"},
+	{6, "Выезд на встречную полосу"},
+	{7, "Езда в нетрезвом состоянии"},
+	{8, "Оскорбление офицера"},
 };
 
-class PoliceDataBase
+class Crime
 {
-	std::map<std::string, std::list<Violations>> database;
+	int violation;
+	std::string place;
 public:
-	void addViolations(const std::string& car_number, const Violations& violation)
+	int get_violation()const
 	{
-		database[car_number].push_back(violation);
+		return violation;
 	}
-	void printDataBase() const
+	const std::string& get_place()const
 	{
-		cout << "\t\tБаза данных" << endl;
-		if (database.empty())
-		{
-			cout << "База данных пуста" << endl;
-			return;
-		}
-		for (std::map<std::string, std::list<Violations>>::const_iterator it = database.begin(); it != database.end(); ++it)
-		{
-			cout << "Номер машины: " << it->first << endl;
-			cout << "Нарушение/я (" << it->second.size() << "):" << endl;
-			cout << (it->second.size() == 1 ? "Нарушение (" : "Нарушений (") << it->second.size() << "):" << endl;
-			for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
-			{
-				V->print();
-			}
-			cout << endl;
-		}
+		return place;
 	}
-	void printByCarNumber(const std::string& Number)const
+	void set_violation(int violation)
 	{
-		cout << "Данные по номеру" << endl;
-		std::map<std::string, std::list<Violations>>::const_iterator it = database.find(Number);
-
-		if (it == database.end())
-		{
-			cout << "Машина с этим номером не найдена" << endl;
-			return;
-		}
-
-		cout << "Номер машины: " << it->first << endl;
-		cout << "" << it->second.size() << endl;
-		for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
-		{
-			V->print();
-		}
+		this->violation = violation;
 	}
-	void printByCarNumberRange(const std::string& Number_first, const std::string& Number_second) const
+	void set_place(const std::string& place)
 	{
-		cout << "Данные по диапазону номеров" << endl;
-		for (std::map<std::string, std::list<Violations>>::const_iterator it = database.begin(); it != database.end(); ++it)
-		{
-			if (it->first >= Number_first && it->first <= Number_second)
-			{
-				cout << endl << "Номер машины: " << it->first << endl;
-				cout << "Количество нарушений: " << it->second.size() << endl;
-				for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
-				{
-					V->print();
-				}
-				cout << endl;
-			}
-		}
+		this->place = place;
 	}
-	void SaveToFile(const std::string& filename) const
+	Crime(int violation, const std::string& place)
 	{
-		std::ofstream fout;
-
-		fout.open(filename, std::ios::app);
-
-		if (!fout.is_open())
-		{
-			cout << "Ошибка открытия файла!" << endl;
-			return;
-		}
-
-		for (std::map<std::string, std::list<Violations>>::const_iterator it = database.begin(); it != database.end(); ++it)
-		{
-			for (std::list<Violations>::const_iterator V = it->second.begin(); V != it->second.end(); ++V)
-			{
-				fout << it->first << "|" << V->toString() << endl;
-			}
-		}
-		fout.close();
-		cout << "Данные успешно загружены: " << filename << endl;
-	}
-	void LoadFromFile(const std::string& filename)const
-	{
-		std::ifstream fin(filename);
-
-		if (!fin.is_open())
-		{
-			cout << "Ошибка открытия файла" << endl;
-			return;
-		}
-
-		std::string line;
-		/*while (std::getline(fin, line))
-		{
-
-		}*/
+		set_violation(violation);
+		set_place(place);
 	}
 };
+std::ostream& operator <<(std::ostream& os, const Crime& obj)
+{
+	os.width(44);
+	os << std::left;
+	return os << VIOLATIONS.at(obj.get_violation()) << "\t" << obj.get_place();
+}
+
+void print(const std::map<std::string, std::list<Crime>>& base);
+void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename);
 
 void main()
 {
-	setlocale(LC_ALL, "Russian");
-	PoliceDataBase police;
+	setlocale(LC_ALL, "");
+	std::map<std::string, std::list<Crime>> base =
+	{
+		{"a777aa", {Crime(4, "ул. Ленина"), Crime(7, "ул. Энтузиастов"), Crime(8, "ул. Энтузиастов")}},
+		{"a123bb", {Crime(2, "ул. Пролетарская"), Crime(3, "ул. Ватутина")}},
+		{"a001eg", {Crime(5, "ул. Октябрьская"), Crime(5, "ул. Октябрьская"), Crime(7, "ул. Космическая")}},
+	};
+	print(base);
+	save(base, "base.txt");
+}
+void print(const std::map<std::string, std::list<Crime>>& base)
+{
+	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate)
+	{
+		cout << plate->first << ":\n";
+		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
+		{
+			cout << "\t" << *violation << endl;
+		}
+		cout << delimiter << endl;
+	}
+}
 
-	police.addViolations("А423НР", Violations("2024-01-15", "Превышение скорости", 500.0));
-	police.addViolations("А423НР", Violations("2024-01-20", "Неправильная парковка", 300.0));
-	police.addViolations("Т742МА", Violations("2024-01-18", "Проезд на красный свет", 5000.0));
-	police.addViolations("М907ММ", Violations("2024-01-22", "Отсутствие страховки", 800.0));
-	police.addViolations("В123АВ", Violations("2024-01-25", "Непристегнутый ремень", 1000.0));
-	police.addViolations("С456СЕ", Violations("2024-01-30", "Превышение скорости", 500.0));
-
-	cout << "\tТЕСТИРОВАНИЕ БАЗЫ ДАННЫХ ГАИ" << endl;
-
-	police.printDataBase();
-
-	police.printByCarNumber("А423НР");
-	police.printByCarNumber("Х999ХХ");
-
-	police.printByCarNumberRange("А100АА", "В200ВВ");
-	police.printByCarNumberRange("Х100ХХ", "Х999ХХ");
-
+void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename)
+{
+	std::ofstream fout(filename);
+	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate)
+	{
+		fout << plate->first << ":\n";
+		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
+		{
+			fout << "\t" << *violation << endl;
+		}
+		fout << delimiter << endl;
+	}
+	fout.close();
+	std::string cmd = "notepad ";
+	cmd += filename;
+	system(cmd.c_str());
 }
