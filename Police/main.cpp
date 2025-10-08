@@ -1,4 +1,5 @@
 ﻿#include<iostream>
+#include<string>
 #include<fstream>
 #include<map>
 #include<list>
@@ -7,6 +8,7 @@ using std::cout;
 using std::endl;
 
 #define delimiter "\n--------------------------------------------------------------\n"
+#define tab "\t"
 
 const std::map<int, std::string> VIOLATIONS =
 {
@@ -57,6 +59,7 @@ std::ostream& operator <<(std::ostream& os, const Crime& obj)
 
 void print(const std::map<std::string, std::list<Crime>>& base);
 void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename);
+bool isPlate(const std::string& plate);
 
 void main()
 {
@@ -69,6 +72,9 @@ void main()
 	};
 	print(base);
 	save(base, "base.txt");
+
+	cout << delimiter << endl;
+	isPlate("приевт");
 }
 void print(const std::map<std::string, std::list<Crime>>& base)
 {
@@ -99,4 +105,43 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 	std::string cmd = "notepad ";
 	cmd += filename;
 	system(cmd.c_str());
+}
+bool isPlate(const std::string& plate)
+{
+	if (plate.length() != 6)return false;
+
+	if (!((plate[0] >= 'a' && plate[0] <= 'z') || (plate[0] >= 'A' && plate[0] <= 'Z')))
+		return false;
+	for (int i = 1; i <= 3; i++)
+	{
+		if (!(plate[i] >= '0' && plate[i] <= '9'))
+			return false;
+	}
+	for (int i = 4; i <= 5; i++)
+	{
+		if (!((plate[i] >= 'a' && plate[i] <= 'z') || (plate[i] >= 'A' && plate[i] <= 'Z')))
+			return false;
+	}
+	return true;
+}
+std::map<std::string, std::list<Crime>> load(const std::string& filename)
+{
+	std::map<std::string, std::list<Crime>> base;
+	std::ifstream fin(filename);
+	if (fin.is_open())
+	{
+		std::string line;
+		std::string plate;
+		while (std::getline(fin, line))
+		{
+			if (line.empty())continue;
+
+		}
+	}
+	else
+	{
+		std::cerr << "Ошибка открытия файла." << endl;
+	}
+	return base;
+
 }
