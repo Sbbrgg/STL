@@ -3,6 +3,7 @@
 #include<fstream>
 #include<map>
 #include<list>
+#include<ctime>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -27,6 +28,7 @@ class Crime
 {
 	int violation;
 	std::string place;
+	std::time_t time;
 public:
 	int get_violation()const
 	{
@@ -36,6 +38,10 @@ public:
 	{
 		return place;
 	}
+	std::time_t get_time()const
+	{
+		return time;
+	}
 	void set_violation(int violation)
 	{
 		this->violation = violation;
@@ -44,10 +50,15 @@ public:
 	{
 		this->place = place;
 	}
-	Crime(int violation, const std::string& place)
+	void set_time(std::time_t time)
+	{
+		this->time = time;
+	}
+	Crime(int violation, const std::string& place, std::time_t time = std::time(nullptr))
 	{
 		set_violation(violation);
 		set_place(place);
+		set_time(time);
 	}
 };
 std::ostream& operator <<(std::ostream& os, const Crime& obj)
