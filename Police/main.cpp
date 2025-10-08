@@ -1,5 +1,6 @@
 ﻿#include<iostream>
 #include<string>
+#include<sstream>
 #include<fstream>
 #include<map>
 #include<list>
@@ -23,7 +24,8 @@ const std::map<int, std::string> VIOLATIONS =
 	{7, "Езда в нетрезвом состоянии"},
 	{8, "Оскорбление офицера"},
 };
-
+class Crime;
+std::stringstream& operator>>(std::stringstream& stream, Crime& obj);
 class Crime
 {
 	int violation;
@@ -60,6 +62,11 @@ public:
 		set_place(place);
 		set_time(time);
 	}
+	explicit Crime(const std::string& str)
+	{
+		std::stringstream stream(str);
+		stream >> * this;
+	}
 };
 std::ostream& operator <<(std::ostream& os, const Crime& obj)
 {
@@ -67,14 +74,33 @@ std::ostream& operator <<(std::ostream& os, const Crime& obj)
 	os << std::left;
 	return os << VIOLATIONS.at(obj.get_violation()) << "\t" << obj.get_place();
 }
+std::ofstream& operator <<(std::ofstream& ofs, const Crime& obj)
+{
+	ofs << obj.get_violation() << " " << obj.get_place();
+	return ofs;
+}
+std::stringstream& operator>>(std::stringstream& stream, Crime& obj)
+{
+	int violation;
+	stream >> violation;
+	std::string place;
+	std::getline(stream, place);
+	obj.set_violation(violation);
+	obj.set_place(place);
+	return stream;
+}
 
 void print(const std::map<std::string, std::list<Crime>>& base);
 void save(const std::map<std::string, std::list<Crime>>& base, const std::string& filename);
-bool isPlate(const std::string& plate);
+std::map<std::string, std::list<Crime>> load(const std::string& filename);
+//bool isPlate(const std::string& plate);
+
+//#define INIT_BASE
 
 void main()
 {
 	setlocale(LC_ALL, "");
+#ifdef INIT_BASE
 	std::map<std::string, std::list<Crime>> base =
 	{
 		{"a777aa", {Crime(4, "ул. Ленина"), Crime(7, "ул. Энтузиастов"), Crime(8, "ул. Энтузиастов")}},
@@ -83,9 +109,10 @@ void main()
 	};
 	print(base);
 	save(base, "base.txt");
+#endif // INIT_BASE
 
-	cout << delimiter << endl;
-	isPlate("приевт");
+	std::map<std::string, std::list<Crime>> base = load("base.txt");
+	print(base);
 }
 void print(const std::map<std::string, std::list<Crime>>& base)
 {
@@ -105,35 +132,17 @@ void save(const std::map<std::string, std::list<Crime>>& base, const std::string
 	std::ofstream fout(filename);
 	for (std::map<std::string, std::list<Crime>>::const_iterator plate = base.begin(); plate != base.end(); ++plate)
 	{
-		fout << plate->first << ":\n";
+		fout << (plate->first) << ":";
 		for (std::list<Crime>::const_iterator violation = plate->second.begin(); violation != plate->second.end(); ++violation)
 		{
-			fout << "\t" << *violation << endl;
+			fout << *violation << ", ";
 		}
-		fout << delimiter << endl;
+		fout << endl;
 	}
 	fout.close();
 	std::string cmd = "notepad ";
 	cmd += filename;
 	system(cmd.c_str());
-}
-bool isPlate(const std::string& plate)
-{
-	if (plate.length() != 6)return false;
-
-	if (!((plate[0] >= 'a' && plate[0] <= 'z') || (plate[0] >= 'A' && plate[0] <= 'Z')))
-		return false;
-	for (int i = 1; i <= 3; i++)
-	{
-		if (!(plate[i] >= '0' && plate[i] <= '9'))
-			return false;
-	}
-	for (int i = 4; i <= 5; i++)
-	{
-		if (!((plate[i] >= 'a' && plate[i] <= 'z') || (plate[i] >= 'A' && plate[i] <= 'Z')))
-			return false;
-	}
-	return true;
 }
 std::map<std::string, std::list<Crime>> load(const std::string& filename)
 {
@@ -141,18 +150,103 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename)
 	std::ifstream fin(filename);
 	if (fin.is_open())
 	{
-		std::string line;
-		std::string plate;
-		while (std::getline(fin, line))
+		while (!fin.eof())
 		{
-			if (line.empty())continue;
+			std::string license_plate;
+			std::getline(fin, license_plate, ':');
+			cout << license_plate << "\t";
+			const int SIZE = 1024 * 10;
+			char all_crimes[SIZE];
+			fin.getline(all_crimes, SIZE);
+			cout << all_crimes << endl;
 
+			const char delimiters[] = ",";
+			for (char* pch = strtok(all_crimes, delimiters); pch; pch = strtok(NULL, delimiters))
+			{
+				base[license_plate].push_back(Crime(pch));
+				/*Crime crime(0, "");
+				std::stringstream stream(pch);
+				stream >> crime;
+				base[license_plate].push_back(crime);*/
+			}
 		}
 	}
 	else
 	{
-		std::cerr << "Ошибка открытия файла." << endl;
+		std::cerr << "Error: File not found" << endl;
 	}
-	return base;
 
+	fin.close();
+	return base;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//bool isPlate(const std::string& plate)
+//{
+//	if (plate.length() != 6)return false;
+//
+//	if (!((plate[0] >= 'a' && plate[0] <= 'z') || (plate[0] >= 'A' && plate[0] <= 'Z')))
+//		return false;
+//	for (int i = 1; i <= 3; i++)
+//	{
+//		if (!(plate[i] >= '0' && plate[i] <= '9'))
+//			return false;
+//	}
+//	for (int i = 4; i <= 5; i++)
+//	{
+//		if (!((plate[i] >= 'a' && plate[i] <= 'z') || (plate[i] >= 'A' && plate[i] <= 'Z')))
+//			return false;
+//	}
+//	return true;
+//}
+//std::map<std::string, std::list<Crime>> load(const std::string& filename)
+//{
+//	std::map<std::string, std::list<Crime>> base;
+//	std::ifstream fin(filename);
+//	if (fin.is_open())
+//	{
+//		std::string line;
+//		std::string plate;
+//		while (std::getline(fin, line))
+//		{
+//			if (line.empty())continue;
+//
+//		}
+//	}
+//	else
+//	{
+//		std::cerr << "Ошибка открытия файла." << endl;
+//	}
+//	return base;
+//
+//}
