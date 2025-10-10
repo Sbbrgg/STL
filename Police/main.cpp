@@ -4,7 +4,7 @@
 #include<fstream>
 #include<map>
 #include<list>
-#include<ctime>
+#include<time.h>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -30,7 +30,7 @@ class Crime
 {
 	int violation;
 	std::string place;
-	std::time_t time;
+	tm time;
 public:
 	int get_violation()const
 	{
@@ -40,9 +40,12 @@ public:
 	{
 		return place;
 	}
-	std::time_t get_time()const
+	std::string get_time() const
 	{
-		return time;
+		char stringtime[256]{};
+		strcpy(stringtime, asctime(&time));
+		stringtime[strlen(stringtime) - 1] = 0;
+		return stringtime;
 	}
 	void set_violation(int violation)
 	{
@@ -52,11 +55,25 @@ public:
 	{
 		this->place = place;
 	}
-	void set_time(std::time_t time)
+	void set_time(const std::string& time)
 	{
-		this->time = time;
+		char timestring[256] = {};
+		strcpy(timestring, time.c_str());
+		//YYYY.MM.DD HH:MM
+		int parts[5] = {};
+		int n = 0;
+		const char delimiters[] = "./- :";
+		for (char* pch = strtok(timestring, delimiters); pch; pch = strtok(NULL, delimiters))
+			//atoi() - ASCII to int;
+			parts[n++] = std::atoi(pch);
+		this->time = {};
+		this->time.tm_year = parts[0] - 1900;
+		this->time.tm_mon = parts[1] - 1;
+		this->time.tm_mday = parts[2];
+		this->time.tm_hour = parts[3];
+		this->time.tm_min = parts[4];
 	}
-	Crime(int violation, const std::string& place, std::time_t time = std::time(nullptr))
+	Crime(int violation, const std::string& place, const std::string& time)
 	{
 		set_violation(violation);
 		set_place(place);
@@ -65,14 +82,14 @@ public:
 	explicit Crime(const std::string& str)
 	{
 		std::stringstream stream(str);
-		stream >> * this;
+		stream >> *this;
 	}
 };
 std::ostream& operator <<(std::ostream& os, const Crime& obj)
 {
 	os.width(44);
 	os << std::left;
-	return os << VIOLATIONS.at(obj.get_violation()) << "\t" << obj.get_place();
+	return os << obj.get_time() << VIOLATIONS.at(obj.get_violation()) << "\t" << obj.get_place();
 }
 std::ofstream& operator <<(std::ofstream& ofs, const Crime& obj)
 {
@@ -96,6 +113,8 @@ std::map<std::string, std::list<Crime>> load(const std::string& filename);
 //bool isPlate(const std::string& plate);
 
 //#define INIT_BASE
+#define INIT_BASE_2
+//#define LOAD_CHECK
 
 void main()
 {
@@ -103,16 +122,32 @@ void main()
 #ifdef INIT_BASE
 	std::map<std::string, std::list<Crime>> base =
 	{
-		{"a777aa", {Crime(4, "ул. Ленина"), Crime(7, "ул. Энтузиастов"), Crime(8, "ул. Энтузиастов")}},
 		{"a123bb", {Crime(2, "ул. Пролетарская"), Crime(3, "ул. Ватутина")}},
+		{"a777aa", {Crime(4, "ул. Ленина"), Crime(7, "ул. Энтузиастов"), Crime(8, "ул. Энтузиастов")}},
 		{"a001eg", {Crime(5, "ул. Октябрьская"), Crime(5, "ул. Октябрьская"), Crime(7, "ул. Космическая")}},
 	};
 	print(base);
-	save(base, "base.txt");
+	//save(base, "base.txt");
 #endif // INIT_BASE
 
+#ifdef INIT_BASE_2
+	std::map<std::string, std::list<Crime>> base =
+	{
+		{"a123bb", {Crime(2, "ул. Пролетарская", "2025.01.05 11:12"), Crime(3, "ул. Ватутина", "2025/01/06 15:25")}},
+		{"a777aa", {Crime(4, "ул. Ленина", "2024.04.04 16:04"), Crime(7, "ул. Энтузиастов", "2024.04.04 16:14"), Crime(8, "ул. Энтузиастов", "2024.04.04 16:24")}},
+		{"a001eg", {Crime(5, "ул. Октябрьская", "2024.07.08 19:08"), Crime(5, "ул. Октябрьская", "2024.07.08 19:28"), Crime(7, "ул. Космическая", "2024.07.08 19:38")}},
+	};
+	print(base);
+	//save(base, "base.txt");
+#endif // INIT_BASE
+
+
+
+#ifdef LOAD_CHECK
 	std::map<std::string, std::list<Crime>> base = load("base.txt");
 	print(base);
+#endif // LOAD_CHECK
+
 }
 void print(const std::map<std::string, std::list<Crime>>& base)
 {
